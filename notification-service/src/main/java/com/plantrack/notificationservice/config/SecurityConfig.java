@@ -45,7 +45,7 @@ public class SecurityConfig {
 
     // @Bean
     // public CorsConfigurationSource corsConfigurationSource() {
-    //  *** this is for frontend core configuration ***
+    // *** this is for frontend cors configuration ***
     // }
 
     @Bean
