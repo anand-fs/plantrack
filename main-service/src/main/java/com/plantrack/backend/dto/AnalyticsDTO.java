@@ -1,4 +1,4 @@
-package com.plantrack.backend.model;
+package com.plantrack.backend.dto;
 
 public class AnalyticsDTO {
     private int totalPlans;
