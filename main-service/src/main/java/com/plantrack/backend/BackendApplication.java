@@ -9,6 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 @SpringBootApplication
 @EnableJpaAuditing // <--- Enables automatic dates (CreatedDate)
+@EnableFeignClients
 public class BackendApplication {
 
 	public static void main(String[] args) {
