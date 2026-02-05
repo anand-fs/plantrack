@@ -1,7 +1,7 @@
 
 # PlanTrack API — Complete API Contract
 
-> **Base URL:** `http://localhost:8080` (Main Service via API Gateway)
+> **Base URL:** `http://localhost:8765` (Main Service via API Gateway)
 >
 > **Architecture:** Microservices (Main Service, Notification Service, API Gateway, Eureka Service Discovery)
 >
