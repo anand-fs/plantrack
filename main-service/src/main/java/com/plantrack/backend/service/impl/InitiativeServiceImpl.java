@@ -378,4 +378,34 @@ public class InitiativeServiceImpl implements InitiativeService{
         milestoneRepository.save(milestone);
         logger.debug("Saved milestone progress update: milestoneId={}", milestone.getMilestoneId());
     }
+
+    // Add this method inside the class
+    @Override
+    public void deleteInitiative(Long id) {
+        logger.debug("Deleting initiative: initiativeId={}", id);
+
+        Initiative initiative = initiativeRepository.findById(id)
+                .orElseThrow(() -> {
+                    logger.error("Initiative not found: initiativeId={}", id);
+                    return new RuntimeException("Initiative not found");
+                });
+
+        Milestone milestone = initiative.getMilestone();
+
+        // Audit the deletion
+        // Note: Assuming auditService has a generic log method or you can use logUpdate as a fallback if logDelete isn't defined
+        auditService.logUpdate("INITIATIVE", id, "Deleted initiative: " + initiative.getTitle());
+
+        // Delete the initiative
+        initiativeRepository.delete(initiative);
+
+        // CRITICAL: Recalculate the parent Milestone's progress
+        if (milestone != null) {
+            // We might need to flush to ensure the select query in updateMilestoneProgress sees the deletion
+            // initiativeRepository.flush(); // Uncomment if your repository extends JpaRepository and you see calculation issues
+            updateMilestoneProgress(milestone);
+        }
+
+        logger.info("Successfully deleted initiative: initiativeId={}", id);
+    }
 }

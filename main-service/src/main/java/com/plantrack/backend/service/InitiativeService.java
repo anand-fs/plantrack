@@ -10,5 +10,5 @@ public interface InitiativeService {
     public Initiative updateInitiative(Long id, Initiative updatedData);
     public List<Initiative> getInitiativesByMilestone(Long milestoneId);
     public List<Initiative> getInitiativesByUser(Long userId);
-    
+    public void deleteInitiative(Long id);
 }
