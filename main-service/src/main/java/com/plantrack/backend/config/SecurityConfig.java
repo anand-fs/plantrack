@@ -57,31 +57,25 @@ public class SecurityConfig {
                 // =========================================================
                 .requestMatchers("/api/users/**").hasRole("ADMIN")
 
-                // 4. REPORTING
+                // REPORTING
                 .requestMatchers("/api/reports/**").hasAnyRole("MANAGER", "ADMIN")
 
-                // 5. PLAN/MILESTONE URLS (Employees can GET plans, but only Managers/Admins can modify)
+                // PLAN/MILESTONE URLS (Employees can GET plans, but only Managers/Admins can modify)
                 .requestMatchers(HttpMethod.GET, "/api/plans/**").hasAnyRole("MANAGER", "EMPLOYEE", "ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/plans/**", "/api/milestones/**").hasAnyRole("MANAGER", "ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/plans/**", "/api/milestones/**").hasAnyRole("MANAGER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/plans/**", "/api/milestones/**").hasAnyRole("MANAGER", "ADMIN")
                 .requestMatchers("/api/milestones/**").hasAnyRole("MANAGER", "ADMIN")
 
-                // 6. INITIATIVES (Strict Rules)
+                // INITIATIVES (Strict Rules)
                 .requestMatchers(HttpMethod.DELETE, "/api/initiatives/**").hasAnyRole("MANAGER", "ADMIN")
                 .requestMatchers("/api/initiatives/**").hasAnyRole("MANAGER", "EMPLOYEE", "ADMIN")
                 
-                // 6.1. COMMENTS (Assigned users, managers, and admins can comment)
+                // COMMENTS (Assigned users, managers, and admins can comment)
                 .requestMatchers("/api/initiatives/*/comments").hasAnyRole("MANAGER", "EMPLOYEE", "ADMIN")
                 .requestMatchers("/api/comments/**").hasAnyRole("MANAGER", "EMPLOYEE", "ADMIN")
 
-                // 7. DASHBOARD STATS
-                .requestMatchers("/api/dashboard/**").hasAnyRole("MANAGER", "EMPLOYEE", "ADMIN")
-                
-                // 8. ANALYTICS (All authenticated users - Employees, Managers, and Admins)
-                .requestMatchers("/api/analytics/**").hasAnyRole("EMPLOYEE", "MANAGER", "ADMIN")
-                
-                // 9. AUDIT LOGS (Admin only)
+                // AUDIT LOGS (Admin only)
                 .requestMatchers("/api/audit-logs/**").hasRole("ADMIN")
 
                 .anyRequest().authenticated()
