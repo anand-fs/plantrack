@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -397,12 +399,11 @@ public class InitiativeServiceImpl implements InitiativeService{
         auditService.logUpdate("INITIATIVE", id, "Deleted initiative: " + initiative.getTitle());
 
         // Delete the initiative
-        initiativeRepository.delete(initiative);
+        initiativeRepository.deleteById(id);
+        initiativeRepository.flush();
 
-        // CRITICAL: Recalculate the parent Milestone's progress
+        // Recalculate the parent Milestone's progress
         if (milestone != null) {
-            // We might need to flush to ensure the select query in updateMilestoneProgress sees the deletion
-            // initiativeRepository.flush(); // Uncomment if your repository extends JpaRepository and you see calculation issues
             updateMilestoneProgress(milestone);
         }
 

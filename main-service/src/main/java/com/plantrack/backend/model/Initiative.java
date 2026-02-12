@@ -55,7 +55,7 @@ public class Initiative {
     private Set<User> assignedUsers = new HashSet<>();
 
     // --- RELATIONSHIP: Initiative has many Comments ---
-    @OneToMany(mappedBy = "initiative", fetch = FetchType.LAZY, cascade = jakarta.persistence.CascadeType.ALL)
+    @OneToMany(mappedBy = "initiative", fetch = FetchType.LAZY, cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({"initiative", "mentionedUsers"}) // Prevent circular references
     private List<Comment> comments = new ArrayList<>();
 
