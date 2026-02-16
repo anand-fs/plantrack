@@ -25,7 +25,7 @@ public class MilestoneController {
     // Get all Milestones for a Plan
     @GetMapping("/plans/{planId}/milestones")
     public List<Milestone> getMilestonesByPlan(@PathVariable Long planId) {
-        return milestoneService.getMilestonesByPlan(planId);
+        return milestoneService. getMilestonesByPlan(planId);
     }
 
     // Update Milestone Progress
