@@ -1,21 +1,26 @@
 package com.plantrack.backend.controller;
 
-import com.plantrack.backend.model.User;
-import com.plantrack.backend.service.CustomUserDetailsService;
-import com.plantrack.backend.util.JwtUtil;
+import java.util.HashMap;
+import java.util.Map;
 
-import jakarta.validation.Valid;
-
-import com.plantrack.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.plantrack.backend.model.User;
+import com.plantrack.backend.repository.UserRepository;
+import com.plantrack.backend.service.CustomUserDetailsService;
+import com.plantrack.backend.util.JwtUtil;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -37,13 +42,14 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public User register(@Valid @RequestBody User user) {
+    public ResponseEntity<User> register(@Valid @RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        User registeredUser = userRepository.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody Map<String, String> loginData) {
+    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody Map<String, String> loginData) {
         String email = loginData.get("email");
         String password = loginData.get("password");
 
@@ -79,6 +85,7 @@ public class AuthController {
         response.put("token", jwt);
         response.put("role", userDetails.getAuthorities().iterator().next().getAuthority());
         response.put("userId", String.valueOf(user.getUserId()));
-        return response;
+        
+        return ResponseEntity.ok(response);
     }
 }

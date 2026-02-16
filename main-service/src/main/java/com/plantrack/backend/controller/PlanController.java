@@ -86,9 +86,9 @@ public class PlanController {
      */
     @PostMapping("/plans/{planId}/cancel")
     public ResponseEntity<Map<String, Object>> cancelPlanWithCascade(@PathVariable Long planId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        // Get userId from authentication context if needed
-        Long userId = null; // Can be extracted from auth if needed for logging
+         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+         // Get userId from authentication context if needed
+         Long userId = null; // Can be extracted from auth if needed for logging
         return ResponseEntity.ok(planService.cancelPlanWithCascade(planId, userId));
     }
 }
