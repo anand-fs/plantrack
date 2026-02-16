@@ -1,5 +1,6 @@
 package com.plantrack.backend.controller;
 
+import org.springframework.http.HttpStatus;
 import com.plantrack.backend.model.Plan;
 import com.plantrack.backend.service.PlanService;
 import jakarta.validation.Valid;
@@ -29,7 +30,8 @@ public class PlanController {
 
     @PostMapping("/users/{userId}/plans")
     public ResponseEntity<Plan> createPlan(@PathVariable Long userId, @Valid @RequestBody Plan plan) {
-        return ResponseEntity.ok(planService.createPlan(userId, plan));
+        Plan createdPlan = planService.createPlan(userId, plan);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdPlan);
     }
 
     @GetMapping("/plans")

@@ -2,6 +2,9 @@ package com.plantrack.backend.controller;
 
 import com.plantrack.backend.model.Milestone;
 import com.plantrack.backend.service.MilestoneService;
+
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +21,9 @@ public class MilestoneController {
 
     // Create a Milestone for a specific Plan (Goal)
     @PostMapping("/plans/{planId}/milestones")
-    public Milestone createMilestone(@PathVariable Long planId, @RequestBody Milestone milestone) {
-        return milestoneService.createMilestone(planId, milestone);
+    public ResponseEntity<Milestone> createMilestone(@PathVariable Long planId, @Valid @RequestBody Milestone milestone) {
+        Milestone createdMilestone = milestoneService.createMilestone(planId, milestone);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdMilestone);
     }
 
     // Get all Milestones for a Plan

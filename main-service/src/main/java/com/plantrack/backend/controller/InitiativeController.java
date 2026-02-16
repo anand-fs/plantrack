@@ -3,7 +3,8 @@ package com.plantrack.backend.controller;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class InitiativeController {
     private InitiativeService initiativeService;
 
     @PostMapping("/milestones/{milestoneId}/initiatives")
-    public Initiative createInitiative(@PathVariable Long milestoneId, 
+    public ResponseEntity<Initiative> createInitiative(@PathVariable Long milestoneId, 
                                        @RequestParam(required = false) String assignedUserIds,
                                        @RequestBody Initiative initiative) {
         // Support both new format (comma-separated IDs) and legacy format (single userId)
@@ -47,9 +48,11 @@ public class InitiativeController {
             // This maintains backward compatibility
             throw new RuntimeException("assignedUserIds parameter is required. Provide comma-separated user IDs (e.g., ?assignedUserIds=1,2,3)");
         }
-        
-        return initiativeService.createInitiative(milestoneId, userIds, initiative);
+     
+        Initiative createdInitiative = initiativeService.createInitiative(milestoneId, userIds, initiative);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdInitiative);
     }
+    
 
     @GetMapping("/milestones/{milestoneId}/initiatives")
     public List<Initiative> getInitiatives(@PathVariable Long milestoneId) {
