@@ -163,10 +163,8 @@ public class CommentServiceImpl implements CommentService{
         if (!isAuthor && !isManagerOrAdmin) {
             throw new RuntimeException("You don't have permission to delete this comment");
         }
-
-        // Soft delete
-        comment.setDeleted(true);
-        commentRepository.save(comment);
+        
+        commentRepository.delete(comment);
 
         // Audit log
         auditService.logDelete("COMMENT", commentId, "Deleted comment on initiative: " + comment.getInitiative().getTitle());
