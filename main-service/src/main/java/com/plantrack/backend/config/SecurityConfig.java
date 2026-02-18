@@ -14,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.Arrays;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -74,6 +72,12 @@ public class SecurityConfig {
                 // COMMENTS (Assigned users, managers, and admins can comment)
                 .requestMatchers("/api/initiatives/*/comments").hasAnyRole("MANAGER", "EMPLOYEE", "ADMIN")
                 .requestMatchers("/api/comments/**").hasAnyRole("MANAGER", "EMPLOYEE", "ADMIN")
+
+                // DASHBOARD STATS
+                .requestMatchers("/api/dashboard/**").hasAnyRole("MANAGER", "EMPLOYEE", "ADMIN")
+
+                // ANALYTICS (All authenticated users - Employees, Managers, and Admins)
+                .requestMatchers("/api/analytics/**").hasAnyRole("EMPLOYEE", "MANAGER", "ADMIN")
 
                 // AUDIT LOGS (Admin only)
                 .requestMatchers("/api/audit-logs/**").hasRole("ADMIN")
