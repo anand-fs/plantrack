@@ -23,12 +23,11 @@ public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
     List<AuditLog> findByEntityTypeAndEntityIdOrderByTimestampDesc(String entityType, Long entityId);
     
     // Find by date range
-    @Query("SELECT a FROM AuditLog a WHERE a.timestamp BETWEEN :startDate AND :endDate ORDER BY a.timestamp DESC")
-    List<AuditLog> findByDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
-    
+    List<AuditLog> findByTimestampBetween(LocalDateTime startDate, LocalDateTime endDate);
+
     // Find by user and date range
-    @Query("SELECT a FROM AuditLog a WHERE a.performedBy = :performedBy AND a.timestamp BETWEEN :startDate AND :endDate ORDER BY a.timestamp DESC")
-    List<AuditLog> findByUserAndDateRange(@Param("performedBy") String performedBy, 
-                                          @Param("startDate") LocalDateTime startDate, 
-                                          @Param("endDate") LocalDateTime endDate);
+    List<AuditLog> findByPerformedByAndTimestampBetween(String performedBy,
+                                                        LocalDateTime startDate,
+                                                        LocalDateTime endDate);
+
 }
